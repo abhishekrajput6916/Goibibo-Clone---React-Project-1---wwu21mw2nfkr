@@ -1,0 +1,26 @@
+.form-container{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    
+    position: relative;
+    width: 50vw;
+    height: 50vh;
+    border: 1px solid black;
+}
+input{
+    padding: 0 4px;
+}           
+button{
+    padding: 0 4px;
+}                    
+.login-path{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 8px;
+}

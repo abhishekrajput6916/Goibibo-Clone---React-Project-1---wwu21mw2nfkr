@@ -1,0 +1,91 @@
+
+.nav-link{
+    text-decoration: none;
+    color: rgb(87, 85, 85);
+    font-size: 14px;
+    font-weight: 700;
+}
+.list-item{
+    list-style: none;
+}
+.navbar{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    
+    .nav-links{
+        width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+}
+.nav-link{
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid rgb(210, 210, 210);
+    /* background-color: aqua; */
+}
+.icon{
+    color:#2274E0;
+    font-size: 16px;
+}
+.active{
+    background-color: #2274E0;
+    color:aliceblue;
+    transition: ease-in 0.3s;
+    >.icon{
+        color: aliceblue;
+    }
+}
+
+#brand-logo{
+    background-color: white;
+    >img{
+        width: 120px;
+    }
+}
+.nav-labels{
+    display: inline;
+    margin-left: 8px;
+}
+.nav-manage-trip{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    >.my-trip{
+        margin-left: 8px;
+        >span{
+            font-weight: 500;
+            font-size: 12px;
+        }
+    }
+}
+.profile-btn{
+    display: flex;
+    align-items: center;
+    >.profile-info-btn{
+        margin-left: 8px;
+    }
+}
+@media screen and (max-width:1200px){
+    .nav-labels{
+        display: none;
+    }
+    .profile-info-btn{
+        display: none;
+    }
+    .font-normal{
+        display: none;
+    }
+}
+.modal{
+    width: 200px;
+    height: 400px;
+    position: absolute;
+    top:auto;
+    right: 50%;    
+    translate: 50%;
+    background-color: aquamarine;
+}
