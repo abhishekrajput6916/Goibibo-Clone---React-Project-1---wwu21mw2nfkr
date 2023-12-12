@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./signup.css";
-
-function Signup() {
-  const navigate = useNavigate();
+import Modal from "../modal/Modal";
+function Signup({ setIsOldUser }) {
   const initialData = {
     fullName: "",
     email: "",
     password: "",
-    confirmPassword: "",
-    userID: "",
   };
+  const [err, seterr] = useState("");
+  const [cPass, setCPass] = useState("");
   const [userDetails, setUserDetails] = useState(initialData);
   function handleInputChange(e) {
     const { value, name } = e.target;
@@ -18,29 +17,50 @@ function Signup() {
   }
   function handleSubmit(e) {
     const id = Math.floor(Math.random() * 10000);
-    const data = { ...userDetails, id: id };
+    const data = { ...userDetails, userId: id };
     e.preventDefault();
     console.log(data);
     const userList = JSON.parse(localStorage.getItem("userList"));
     if (userList) {
       if (userList.find((user) => user.email === data.email)) {
         console.log("user already exists.");
-        navigate("/login")
+        setIsOldUser();
         return;
       } else {
-        userList.push(data);
-        localStorage.setItem("userList", JSON.stringify(userList));
+        if (data.fullName == "") {
+          seterr("Enter full name");
+        } else if (data.email == "") {
+          seterr("Enter email");
+        } else if (data.password == "") {
+          seterr("Enter password");
+        } else if (data.password !== cPass){
+          seterr("Password mismatch!!")
+        }else {
+          userList.push(data);
+          localStorage.setItem("userList", JSON.stringify(userList));
+        }
       }
     } else {
-      const newUserList = [data];
-      localStorage.setItem("userList", JSON.stringify(newUserList));
+      if (data.fullName == "") {
+        seterr("Enter full name");
+      } else if (data.email == "") {
+        seterr("Enter email");
+      } else if (data.password == "") {
+        seterr("Enter password");
+      } else if (data.password !== cPass){
+        seterr("Password mismatch!!")
+      }else {
+        const newUserList = [data];
+        localStorage.setItem("userList", JSON.stringify(newUserList));
+      }
     }
     // localStorage.setItem("userList",)
     console.log("userList", userList);
     // navigate("/login");
   }
   return (
-    <div className="form-container">
+    <div className="signup-form">
+      <h1 className="signup-page-title">Sign Up</h1>
       <input
         onChange={handleInputChange}
         type="text"
@@ -66,30 +86,32 @@ function Signup() {
         placeholder="Create Password"
       />
       <input
-        onChange={handleInputChange}
+        onChange={(e) => {
+          setCPass(e.target.value);
+        }}
         type="password"
         name="confirmPassword"
         id="confirmPassword"
         placeholder="Confirm Password"
-        value={userDetails.confirmPassword}
+        value={cPass}
       />
       <button id="signup-btn" onClick={handleSubmit}>
         Signup
       </button>
+      {err && <div className="error">Error: {err}</div>}
       <div className="login-path">
         <p>Already a user..?</p>
-        <button onClick={() => navigate("/login")}>Login Here</button>
+        <button
+          onClick={() => {
+            console.log("open login");
+            setIsOldUser();
+          }}
+        >
+          Login Here
+        </button>
       </div>
     </div>
   );
 }
 
 export default Signup;
-
-
-
-
-
-
-
-

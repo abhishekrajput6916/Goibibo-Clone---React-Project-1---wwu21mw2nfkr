@@ -1,0 +1,9 @@
+.page404-page-title{
+    font-size: 28px;
+    color: white;
+    font-weight: 700;
+    margin: 5rem auto 1rem auto;
+    text-wrap: nowrap;
+    width: 100px;
+    transform: translateX(-150%);
+}

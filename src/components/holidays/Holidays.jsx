@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
+import './holidays.css';
 
 function Holidays() {
   return (
-    <div>Holidays</div>
-  )
+    <div className="holidays">
+      <div className="holiday-page-title">Coming Soon...</div>
+    </div>
+  );
 }
 
-export default Holidays
+export default Holidays;
+ 

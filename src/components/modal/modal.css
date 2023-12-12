@@ -1,11 +1,38 @@
 .modal{
-    width:550px;
-    background-color: #000;
-    height: 700px;
+    /* width:50rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 50%;
     border-radius: 1rem;
     padding: 2rem;
-    margin: 1rem;
+    margin: 1rem; */
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+
+    /* width: 50vw;
+    height: 50vh; */
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+.modal-content {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    gap: 10px;
+    background-color: white;
+    height: 400px;
+    width: 300px;
+    padding: 0 10px;
+    border-radius: 5px;    
+  }
+
 @media only screen and (max-width:620px) {
     .modal{
         width:90vw;
@@ -17,4 +44,11 @@
     .modal{
         height:650px;
     }
+}
+.xmark{
+    position: absolute;
+    top: 1rem;
+    right: .75rem;
+    cursor: pointer;
+    color: rgb(14, 17, 17);
 }

@@ -1,24 +1,36 @@
-.form-container{
+.login-form{
     margin-top: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    gap: 8px;
+    align-items: start;
+    gap: 12px;
 }
-input{
+/* input{
     padding: 0 4px;
-}           
+}            */
 button{
-    padding: 0 4px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: none;
+    color:rgb(255, 255, 255);
+    background-color: #2274E0;
+    font-size: 14px;
+    font-weight: 700;
 }                    
 .signup-path{
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: start;
     flex-direction: column;
     gap: 8px;
 }
-.title{
-    color:aliceblue;
+.login-page-title{
+    color:rgb(74, 74, 74);
+}
+.logout-page-title{
+    color:rgb(74, 74, 74);
+}
+.error{
+    color:red;
 }

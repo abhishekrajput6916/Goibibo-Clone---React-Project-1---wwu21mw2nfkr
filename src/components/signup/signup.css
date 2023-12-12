@@ -1,26 +1,22 @@
-.form-container{
+.signup-form{
     margin-top: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: start;
     gap: 8px;
-    
-    position: relative;
-    width: 50vw;
-    height: 50vh;
-    border: 1px solid black;
 }
 input{
     padding: 0 4px;
-}           
-button{
-    padding: 0 4px;
-}                    
+    border-radius: 5px;
+}                              
 .login-path{
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: start;
     flex-direction: column;
     gap: 8px;
+}
+.signup-page-title{
+    color:rgb(74, 74, 74);
 }
