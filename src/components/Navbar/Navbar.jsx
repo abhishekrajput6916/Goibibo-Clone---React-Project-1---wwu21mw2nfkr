@@ -13,16 +13,18 @@ import {
   faBars,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import BrandLogo from "./BrandLogo";
 import UserProfile from "./UserProfile";
-import { ModalContext } from "../Contexts/ModalContext";
+import { ModalContext,LoginContext } from "../Contexts/contexts";
 import { useContext, useEffect, useState } from "react";
 import Modal from "../modal/Modal";
 
 export default function Navbar() {
   const { showModal, setShowModal } = useContext(ModalContext);
+  const {isLoggedIn}=useContext(LoginContext);
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
+  const navigate=useNavigate();
 
   const toggleHamburger = () => {
     setHamburgerOpen((old) => !old);
@@ -62,15 +64,15 @@ export default function Navbar() {
           </NavLink>
         </li>
         <li className="list-item">
-          <NavLink to="/cabs" className="nav-link">
-            <FontAwesomeIcon className="icon" icon={faTaxi} />
-            <div className="nav-labels">Cabs</div>
-          </NavLink>
-        </li>
-        <li className="list-item">
           <NavLink to="/bus" className="nav-link">
             <FontAwesomeIcon className="icon" icon={faBus} />
             <div className="nav-labels">Bus</div>
+          </NavLink>
+        </li>
+        <li className="list-item">
+          <NavLink to="/cabs" className="nav-link">
+            <FontAwesomeIcon className="icon" icon={faTaxi} />
+            <div className="nav-labels">Cabs</div>
           </NavLink>
         </li>
         <li className="list-item">
@@ -99,6 +101,7 @@ export default function Navbar() {
         <UserProfile
           onClick={() => {
             console.log("user Profile clicked");
+            // isLoggedIn&&navigate('/signup')
             setShowModal((old) => !old);
           }}
         />

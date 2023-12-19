@@ -39,10 +39,28 @@
     color: rgb(87, 85, 85);
     font-size: 14px;
     font-weight: 700;
+    text-wrap:nowrap;
     /* background-color: aqua; */
+}
+.nav-links-mobile{
+    background-color: rgb(161, 161, 161);
+    padding: 1rem;
+    transform-origin: 1px;
+    transition: all .3s ease-in;
+    border-radius: 5px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    position: absolute;
+    top: 5rem;
+    right: 1rem; 
+
 }
 #my-trips{
     border: none;
+    /* width: max-content; */
     text-wrap:nowrap;
     .icon{
         font-size: 20px;
@@ -52,21 +70,17 @@
 @media screen and (max-width:500px) {
     #my-trips{
         text-wrap:wrap;
+        width: fit-content;
     }
-    
+    #userProfile{
+        width: fit-content;
+    }    
 }
 .icon{
     color:#2274E0;
     font-size: 16px;
 }
-.active{
-    background-color: #2274E0;
-    color:aliceblue;
-    transition: ease-in 0.3s;
-    >.icon{
-        color: aliceblue;
-    }
-}
+
 
 #brand-logo{
     background-color: white;
@@ -117,37 +131,25 @@
     }
     .nav-link{
         background-color: white;
+        border: none;
     }
     
     .nav-labels{
         display: contents;
     }
 
-    .nav-links-mobile{
-        background-color: rgb(161, 161, 161);
-        padding: 1rem;
-        transform-origin: 1px;
-        transition: all .3s ease-in;
-        border-radius: 5px;
-
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-
-        position: absolute;
-        top: 5rem;
-        right: 1rem; 
-
+    .profile-info-btn{
+        text-align: center;
     }
-    .active{
-        background-color: #2274E0;
-        color:aliceblue;
-        transition: ease-in 0.3s;
-        >.icon{
-            color: aliceblue;
-        }
-    }
-    .nav-2{
-        margin-right: 1rem;
+
+    
+    
+}
+.active{
+    background-color: #2274E0;
+    color:aliceblue;
+    transition: ease-in 0.3s;
+    >.icon{
+        color: aliceblue;
     }
 }

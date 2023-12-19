@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { createPortal } from "react-dom";
 import "./hotels.css";
+import Counter from "../otherUtilityComponents/Counter";
 
 function HotelModal({ onClose, setGuests, setRooms }) {
   //to create a portal, use the createPortal function:
@@ -13,16 +14,12 @@ function HotelModal({ onClose, setGuests, setRooms }) {
   const ref = useRef();
   useEffect(() => {
     const checkIfClickedOutside = (e) => {
-      // console.log("ref",ref.current);
       if (e.target.contains(ref.current)) {
-        // console.log("setting showModal false");
         onClose();
       }
     };
-
     document.addEventListener("click", checkIfClickedOutside);
     return () => {
-      // console.log("modal close");
       document.removeEventListener("click", checkIfClickedOutside);
     };
   }, []);
@@ -33,11 +30,11 @@ function HotelModal({ onClose, setGuests, setRooms }) {
     onClose();
   }
 
-  return createPortal(
+  return (
     <div className="hotel-modal" ref={ref}>
       <div className="guest-modal-body">
-        <div className="rooms">
-          Rooms (max 8)
+        <div className="guest-parent" id="rooms">
+          <div className="guest-child">Rooms (max 8)</div>
           <Counter
             lowerBound={1}
             upperBound={8}
@@ -52,8 +49,8 @@ function HotelModal({ onClose, setGuests, setRooms }) {
           />
         </div>
 
-        <div className="adults">
-          Adults
+        <div className="guest-parent" id="adults">
+          <div className="guest-child">Adults</div>
           <Counter
             lowerBound={1}
             upperBound={16}
@@ -67,8 +64,8 @@ function HotelModal({ onClose, setGuests, setRooms }) {
             }}
           />
         </div>
-        <div className="children">
-          Children
+        <div className="guest-parent" id="children">
+          <div className="guest-child">Children</div>
           <Counter
             lowerBound={0}
             upperBound={4}
@@ -83,50 +80,11 @@ function HotelModal({ onClose, setGuests, setRooms }) {
           />
         </div>
       </div>
-      <button onClick={handleDoneBtnClick}>Done</button>
-    </div>,
-    document.body
+      <button id="done-btn" onClick={handleDoneBtnClick}>Done</button>
+    </div>
   );
 }
 
 export default HotelModal;
 
-function Counter({ lowerBound, upperBound, doSet }) {
-  const [num, setNum] = useState(lowerBound);
-  useEffect(() => {
-    doSet(num);
-  }, [num]);
-  return (
-    <div className="counter">
-       <div
-        className="increment"
-        onClick={() => {
-          setNum((old) => {
-            if (old > lowerBound) {
-              return old - 1;
-            } else {
-              return old;
-            }
-          });
-        }}
-      >
-        -
-      </div>
-      <div>{num}</div>
-      <div
-        className="decrement"
-        onClick={() => {
-          setNum((old) => {
-            if (old < upperBound) {
-              return old + 1;
-            } else {
-              return old;
-            }
-          });
-        }}
-      >
-        + 
-      </div>
-    </div>
-  );
-}
+

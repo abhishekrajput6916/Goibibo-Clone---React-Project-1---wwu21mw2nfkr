@@ -4,10 +4,11 @@ import { createPortal } from "react-dom";
 import Login from "../login/Login";
 import Signup from "../signup/Signup";
 import Logout from "../login/Logout";
-import { LoginContext } from "../Contexts/LoginContext";
-import { ModalContext } from "../Contexts/ModalContext";
+import { LoginContext } from "../Contexts/contexts";
+import { ModalContext } from "../Contexts/contexts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+// import SignInSide from "../login/LogIn2";
 
 const Modal = () => {
   const {showModal,setShowModal}=useContext(ModalContext);
@@ -35,7 +36,7 @@ const Modal = () => {
     }
   }, [])
 
-  const { isLoggedIn, setIsLoggedin } = useContext(LoginContext);                 
+  const { isLoggedIn } = useContext(LoginContext);                 
   // console.log("Modal Opened");
 
   return createPortal(

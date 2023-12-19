@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom'
 
 function BrandLogo() {
   return (
-    <NavLink to="/flights" id="brand-logo"><img src={logo} /></NavLink>
+    <NavLink to="/" id="brand-logo"><img src={logo} /></NavLink>
   )
 }
 

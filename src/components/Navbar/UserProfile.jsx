@@ -3,29 +3,37 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
-import { LoginContext } from "../Contexts/LoginContext";
-import { LoggedUserContext } from "../Contexts/LoggedUserContext";
+import { LoginContext } from "../Contexts/contexts";
+// import { LoggedUserContext } from "../Contexts/contexts";
 
 
 function UserProfile({onClick}) {
-  const {setLoggedInUser}=useContext(LoggedUserContext);
+  // const {loggedInUser}=useContext(LoggedUserContext);
   const {isLoggedIn}=useContext(LoginContext);
+  const [userName,setUserName]=useState('');
   // const navigate = useNavigate();
 // const user=JSON.parse(sessionStorage.getItem("loggedInUser"));
-console.log("Logged user");//
-console.log("isLoggedIn",isLoggedIn);
-const loggedUser=isLoggedIn?JSON.parse(sessionStorage.getItem("loggedInUser")):null;
+// console.log("Logged user");//
+// console.log("isLoggedIn",isLoggedIn);
+// const loggedUser=isLoggedIn?):null;
+useEffect(()=>{
+  if(sessionStorage.getItem("user")){
+    const firstName=JSON.parse(sessionStorage.getItem("user")).name.split(" ")[0];
+    setUserName(firstName.charAt(0).toUpperCase()+firstName.substring(1).toLowerCase());
+  }
+  // setUserName("");
+},[isLoggedIn])
   return (
     <div
       className="profile-btn nav-link"
+      id="userProfile"
       onClick={onClick}      
     >
       <FontAwesomeIcon className="icon" icon={faUser} />
       <div className="profile-info-btn">
         {isLoggedIn
           ? `Hey ${
-              loggedUser.fullName.charAt(0).toUpperCase() +
-             loggedUser.fullName.substring(1).toLowerCase()
+              userName
             // loggedInUser
             }`
           : "Login / Signup"}

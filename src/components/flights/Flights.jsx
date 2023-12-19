@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./flights.css";
 import axios from "axios";
 import { ThreeCircles } from "react-loader-spinner";
+import { useLocation } from "react-router-dom";
 
 function Flights() {
   const [isLoading, setIsLoading] = useState(false);
   const [flightsArray, setFlightsArray] = useState([]);
+  const location=useLocation();
+  const flightsRef=useRef();
   async function getFlightDetails(location) {
     setIsLoading(true);
     try {
@@ -28,6 +31,10 @@ function Flights() {
   }
 
   useEffect(() => {
+    if(location.pathname=='/'){
+      console.log(flightsRef.current.classList)
+      flightsRef.current.classList.add("active");
+    }
     getFlightDetails("delhi");
   }, []);
   useEffect(() => {
@@ -37,7 +44,7 @@ function Flights() {
   }, [isLoading]);
 
   return !isLoading ? (
-    <div className="flights">
+    <div className="flights" ref={flightsRef}>
       {/* {flightsArray.map((flight)=>{
         return <div key={flight._id}>{flight.name}</div>
       })} */}
@@ -45,7 +52,7 @@ function Flights() {
       <div className="flight-page-title">Book Flights</div>
       <div className="flights-form-container">
         <div className="radio">
-          <lable for="one-way">
+          <lable htmlFor="one-way">
             <input
               type="radio"
               name="trip-type"
@@ -54,7 +61,7 @@ function Flights() {
             />
             One-way
           </lable>
-          <lable for="round-trip">
+          <lable htmlFor="round-trip">
             <input
               type="radio"
               name="trip-type"
@@ -63,7 +70,7 @@ function Flights() {
             />
             Round-trip
           </lable>
-          <lable for="multi-city">
+          <lable htmlFor="multi-city">
             <input
               type="radio"
               name="trip-type"
@@ -74,7 +81,9 @@ function Flights() {
           </lable>
         </div>
       </div>
-      <button className="flight-search-btn">Search flights</button>
+      <button className="flight-search-btn" onClick={()=>{
+        console.log(location);
+      }}>Search flights</button>
     </div>
   ) : (
     <div className="loader">

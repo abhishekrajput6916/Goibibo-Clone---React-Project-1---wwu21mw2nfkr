@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./signup.css";
 import Modal from "../modal/Modal";
+import axios from "axios";
+import getHeaderWithProjectId from "../otherUtilityComponents/service";
 function Signup({ setIsOldUser }) {
   const initialData = {
-    fullName: "",
+    name: "",
     email: "",
     password: "",
   };
@@ -15,47 +17,68 @@ function Signup({ setIsOldUser }) {
     const { value, name } = e.target;
     setUserDetails({ ...userDetails, [name]: value });
   }
-  function handleSubmit(e) {
-    const id = Math.floor(Math.random() * 10000);
-    const data = { ...userDetails, userId: id };
-    e.preventDefault();
-    console.log(data);
-    const userList = JSON.parse(localStorage.getItem("userList"));
-    if (userList) {
-      if (userList.find((user) => user.email === data.email)) {
-        console.log("user already exists.");
-        setIsOldUser();
-        return;
-      } else {
-        if (data.fullName == "") {
-          seterr("Enter full name");
-        } else if (data.email == "") {
-          seterr("Enter email");
-        } else if (data.password == "") {
-          seterr("Enter password");
-        } else if (data.password !== cPass){
-          seterr("Password mismatch!!")
-        }else {
-          userList.push(data);
-          localStorage.setItem("userList", JSON.stringify(userList));
-        }
+  const createUser = async (user) => {
+    const config = getHeaderWithProjectId();
+    try {
+      const res = await axios.post(
+        "https://academics.newtonschool.co/api/v1/bookingportals/signup",
+        { ...user, appType: "bookingportals" },
+        config
+      );
+      const token=res.data.token;
+      if(token){
+        sessionStorage.setItem("userToken",token);
+        alert("Successfully Signed up, Please Login!")
+        setIsOldUser(true);
       }
-    } else {
-      if (data.fullName == "") {
-        seterr("Enter full name");
-      } else if (data.email == "") {
-        seterr("Enter email");
-      } else if (data.password == "") {
-        seterr("Enter password");
-      } else if (data.password !== cPass){
-        seterr("Password mismatch!!")
-      }else {
-        const newUserList = [data];
-        localStorage.setItem("userList", JSON.stringify(newUserList));
-      }
+      console.log("Response", res);
+    } catch (err) {
+      const apiErr=err.response.data.message;
+      console.log("Error", err.response.data.message);
+      
     }
+  };
+  function validateForm() {
+    if (userDetails.name == "") {
+      seterr("Enter full name");
+    } else if (userDetails.email == "") {
+      seterr("Enter email");
+    } else if (userDetails.password == "") {
+      seterr("Enter password");
+    } else if (userDetails.password !== cPass) {
+      seterr("Password mismatch!!");
+    } else {
+      return true;
+    }
+    return false;
+  }
+  function handleSubmit(e) {
+    // const id = Math.floor(Math.random() * 10000);
+    // const data = { ...userDetails, userId: id };
+    e.preventDefault();
+    // console.log(data);
+    createUser(userDetails);
+  
+    // const userList = JSON.parse(localStorage.getItem("userList"));
+    // if (userList) {
+    //   if (userList.find((user) => user.email === data.email)) {
+    //     console.log("user already exists.");
+    //     setIsOldUser();
+    //     return;
+    //   } else {
+    //     if (validateForm()) {
+    //       userList.push(data);
+    //       localStorage.setItem("userList", JSON.stringify(userList));
+    //     }
+    //   }
+    // } else {
+    //   if (validateForm()) {
+    //     const newUserList = [data];
+    //     localStorage.setItem("userList", JSON.stringify(newUserList));
+    //   }
+    // }
     // localStorage.setItem("userList",)
-    console.log("userList", userList);
+    // console.log("userList", userList);
     // navigate("/login");
   }
   return (
@@ -64,9 +87,9 @@ function Signup({ setIsOldUser }) {
       <input
         onChange={handleInputChange}
         type="text"
-        name="fullName"
-        value={userDetails.fullName.toUpperCase()}
-        id="fullname"
+        name="name"
+        value={userDetails.name.toUpperCase()}
+        id="name"
         placeholder="Enter your Full Name"
       />
       <input

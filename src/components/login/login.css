@@ -19,16 +19,20 @@ button{
     font-weight: 700;
 }                    
 .signup-path{
-    display: flex;
+    display: flex; 
     justify-content: center;
     align-items: start;
     flex-direction: column;
     gap: 8px;
 }
-.login-page-title{
-    color:rgb(74, 74, 74);
+#logout{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
 }
-.logout-page-title{
+.login-page-title{
     color:rgb(74, 74, 74);
 }
 .error{
