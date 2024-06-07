@@ -1,22 +1,16 @@
 
   @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;600;700&family=Varela+Round&display=swap');
 .App{
-    padding: 10px 0;
+    padding: .01rem 0;
     font-family: 'Comfortaa', sans-serif;
 font-family: 'Varela Round', sans-serif;
+
   }
   button{
     cursor: pointer;
   }
   .main{
     margin-top: 4rem ;
-    padding: 0 1rem;
+    /* padding: 0 1rem; */
   }
-  .background-svg{
-    margin-top: 4rem ;
-    /* width: 100vw; */
-    position: absolute;
-    z-index: -1;
-    left: 0;
-    right: 0;
-  }
+  

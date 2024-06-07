@@ -1,25 +1,101 @@
-import { useContext } from 'react'
-import React from 'react'
-import { LoginContext } from '../Contexts/contexts'
-import { ModalContext } from '../Contexts/contexts';
+import Avatar from "@mui/material/Avatar";
+import avatarImg from "../../images/dp.jpg";
+import { useContext, useEffect, useState } from "react";
+import React from "react";
+import { useModal, useAuth } from "../Contexts/contexts";
+import { Box, Typography, Grid, Button } from "@mui/material";
+import { FacebookOutlined, LinkedIn, Twitter } from "@mui/icons-material";
 
-function Logout() {
-  const {isLoggedIn,setIsLoggedIn} =useContext(LoginContext);  
-  const {showModal,setShowModal} =useContext(ModalContext);  
-  function handleLogout(){
+const ProfileCard = () => {
+  const { setShowModal } = useModal();
+  const { setIsLoggedIn } = useAuth();
+  const [userDetails, setUserDetails] = useState({
+    profileSrc: "",
+    name: "",
+    email: "",
+    social: {
+      linkedinID: "",
+      facebookId: "",
+      twitterId: "",
+    },
+  });
+
+  useEffect(() => {
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    if (user) {
+      setUserDetails((oldUser) => {
+        const { name, email } = user.user;
+        return {
+          ...oldUser,
+          profileSrc: "",
+          name: name.toUpperCase(),
+          email: email,
+          social: {
+            linkedinID: "",
+            facebookId: "",
+            twitterId: "",
+          },
+        };
+      });
+    }
+  }, []);
+  function handleLogout() {
     sessionStorage.clear();
     setIsLoggedIn(false);
+    console.log("Log out", userDetails.name);
     setShowModal(false);
-
-
-    // sessionStorage.setItem("loggedInUser", JSON.stringify(user))
   }
   return (
-    <div id='logout'>
-        <h1 className='logout-page-title'>Logout</h1>
-        <button onClick={handleLogout}>Logout</button>
-    </div>
-  )
-}
+    <Box
+      sx={{
+        marginTop: 3,
+        py: "2rem",
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        alignItems: "center",
+      }}
+    >
+      <Typography component="h1" variant="h6" color="rgba(0,0,0,0.8)">
+        Profile
+      </Typography>
+      <Box>
+        <Avatar src={avatarImg} sx={{ width: "5rem", height: "5rem" }} />
+      </Box>
 
-export default Logout
+      <Typography component="h1" variant="h4">
+        {userDetails.name}
+      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography component="h1" variant="h6">
+          Email: {userDetails.email}
+        </Typography>
+        <Box>
+          <FacebookOutlined />
+          <Twitter />
+          <LinkedIn />
+        </Box>
+      </Box>
+
+      <Box sx={{ mt: 1 }}>
+        <Button
+          fullWidth
+          variant="contained"
+          sx={{ mb: 2 }}
+          onClick={() => {
+            handleLogout();
+          }}
+        >
+          Log Out
+        </Button>
+      </Box>
+    </Box>
+  );
+};
+export default ProfileCard;

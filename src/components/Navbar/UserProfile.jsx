@@ -3,29 +3,32 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
-import { LoginContext } from "../Contexts/contexts";
+import { LoginContext, useAuth } from "../Contexts/contexts";
 // import { LoggedUserContext } from "../Contexts/contexts";
 
 
-function UserProfile({onClick}) {
-  // const {loggedInUser}=useContext(LoggedUserContext);
-  const {isLoggedIn}=useContext(LoginContext);
+function UserProfile({onClick,currentUser,setCurrentUser}) {
+  const { isLoggedIn } = useAuth();
   const [userName,setUserName]=useState('');
-  // const navigate = useNavigate();
-// const user=JSON.parse(sessionStorage.getItem("loggedInUser"));
-// console.log("Logged user");//
-// console.log("isLoggedIn",isLoggedIn);
-// const loggedUser=isLoggedIn?):null;
 useEffect(()=>{
-  if(sessionStorage.getItem("user")){
-    const firstName=JSON.parse(sessionStorage.getItem("user")).name.split(" ")[0];
+  
+  const user= JSON.parse(sessionStorage.getItem("user"));
+  if(user){
+    console.log('curruser',user.user.name)
+    console.log(user);
+    const firstName=user.user.name.split(" ")[0];
     setUserName(firstName.charAt(0).toUpperCase()+firstName.substring(1).toLowerCase());
+  }else{
+    console.log("some error occured");
   }
   // setUserName("");
 },[isLoggedIn])
+useEffect(()=>{
+  console.log("userName changed",userName,currentUser);
+},[])
   return (
     <div
-      className="profile-btn nav-link"
+      className="profile-btn"
       id="userProfile"
       onClick={onClick}      
     >

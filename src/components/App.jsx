@@ -1,49 +1,56 @@
 import "../styles/App.css";
+import { createTheme, ThemeProvider} from "@mui/material/styles";
+import { colors } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { LoginContext } from "./Contexts/contexts";
-import { ModalContext } from "./Contexts/contexts";
-// import { LoggedUserContext } from "./Contexts/contexts";
 import Navbar from "./Navbar/Navbar";
 import Flights from "./flights/Flights";
 import Hotels from "./hotels/Hotels";
 import Buses from "./buses/Buses";
 import Trains from "./trains/Trains";
-import Modal from "./modal/Modal";
 import Holidays from "./holidays/Holidays";
 import Cabs from "./cabs/Cabs";
 import Page404 from "./Page404/Page404";
 import Forex from "./forex/Forex";
 import HotelSearchInterface from "./hotels/HotelSearchInterface";
-import Footer from "./footer/Footer";
 import FooterComp from "./footer/Footer";
+import { Divider } from "@mui/material";
+import { ModalContextProvider,AuthProvider, useModal, useAuth } from "./Contexts/contexts";
+import LoginModal from "./modal/Modal";
+import SideBar from "./otherUtilityComponents/resultPage/SideBar";
+import ItemCard from "./otherUtilityComponents/resultPage/ItemCard";
+import { Flight } from "@mui/icons-material";
+import MyFlights from "./flights/FlightsSearch";
+import FlightsSearch from "./flights/FlightsSearch";
+// import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
 
+const defaultTheme = createTheme({
+  palette: {
+    type: 'light',
+    primary: {
+      main: '#2274E0',
+    },
+    secondary: {
+      main: '#ff6d38',
+      contrastText: '#000',
+    },
+  },
+});
 function App() {
-  const [showModal, setShowModal] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [loggedInUSer, setLoggedInUser] = useState(null);
-
-  useEffect(() => {
-    console.log(isLoggedIn, setIsLoggedIn);
-  }, []);
-
+  const { isLoggedIn,setIsLoggedIn } = useAuth();
+  const [user,setUser]=useState(JSON.parse(sessionStorage.getItem("user")));
+useEffect(()=>{
+  if(user){
+    console.log("appjs rendered with username ",user.user.name)
+  }
+},[])
   return (
+    <ThemeProvider theme={defaultTheme}>
     <div className="App container">
-      {/* <LoggedUserContext.Provider value={{ loggedInUSer, setLoggedInUser }}> */}
-        <ModalContext.Provider value={{ showModal, setShowModal }}>
-          <LoginContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
-            <Navbar />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 1440 320"
-              className="background-svg"
-            >
-              <path
-                fill="#2274E0"
-                fillOpacity="1"
-                d="M0,288L80,250.7C160,213,320,139,480,144C640,149,800,235,960,261.3C1120,288,1280,256,1360,240L1440,224L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
-              ></path>
-            </svg>
+        <ModalContextProvider>
+          <AuthProvider>
+            <Navbar currentUser={user} setCurrentUser={setUser}/>
+            
             {/* <div className="wave">
             </div> */}
             <div className="main">
@@ -51,23 +58,25 @@ function App() {
                 <Route path="*" element={<Page404 />} />
                 <Route path="/" element={<Flights/>} />
                 <Route path="/flights" element={<Flights />} />
+                <Route path="/flights/:searchParam" element={<FlightsSearch />} />
+                <Route path="/flights-search" element={<MyFlights />} />
                 <Route path="/hotels" element={<Hotels />} />
                 <Route path="/hotels/results" element={<HotelSearchInterface />} />
                 <Route path="/trains" element={<Trains />} />
                 <Route path="/bus" element={<Buses />} />
-                <Route path="/cabs" element={<Cabs />} />
-                <Route path="/holidays" element={<Holidays />} />
-                <Route path="/forex" element={<Forex />} />
+                <Route path="/test" element={<ItemCard />} />
+                {/* <Route path="/cabs" element={<Cabs />} /> */}
+                {/* <Route path="/holidays" element={<Holidays />} /> */}
+                {/* <Route path="/forex" element={<Forex />} /> */}
               </Routes>
             </div>
-            {showModal && <Modal />}
-            <hr/>
+            <Divider/>
             <FooterComp/>
-            {/* <div>Lorem ipaiores excepturi?</div> */}
-          </LoginContext.Provider>
-        </ModalContext.Provider>
-      {/* </LoggedUserContext.Provider> */}
+          </AuthProvider>
+        </ModalContextProvider>
     </div>
+    </ThemeProvider>
+
   );
 }
 

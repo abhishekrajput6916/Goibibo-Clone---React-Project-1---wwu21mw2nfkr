@@ -1,32 +1,34 @@
 import { faL } from "@fortawesome/free-solid-svg-icons";
+import { SearchRounded } from "@mui/icons-material";
+import { Input } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
-function Search({ handleSearch, searchFor, array }) {
+function Search({ handleSearch, searchFor, array,sx,color,InputProps }) {
   const [value, setValue] = useState('');
   const [suggest, setSuggest] = useState(true);
-  // const [filteredArray, setFilteredArray] = useState([]);
   function onChange(e) {
     setValue(e.target.value);
-    // setSuggest(false)
     handleSearch(value);
   }
   useEffect(()=>{setSuggest(true)},[value])
   
   return (
     <div className="search-component">
-      <FaSearch className="search-icon" />
-      <input
+      <SearchRounded color={color}/>
+      <Input
+      sx={sx}
         type="text"
         onChange={onChange}
         placeholder={`Enter ${searchFor}`}
         value={value}
+        InputProps={InputProps}
       />
 
       {value && suggest && <div id="matchingResults" className="dropdown">
         {array
           .filter((item) => {
-            const searchTerm = item.location.toLowerCase();
+            const searchTerm = item.cityState.toLowerCase();
             const query = value.toLowerCase();
             if(searchTerm===query){
               setSuggest(false)
@@ -37,14 +39,14 @@ function Search({ handleSearch, searchFor, array }) {
             return (
               <div
                 onClick={() => {
-                  setValue(item.location)
-                  handleSearch(item.location);
+                  setValue(item.cityState)
+                  handleSearch(item.cityState);
                   // console.log();
                 }}
                 key={item._id}
                 className="dropdown-row"
               >
-                {item.location}
+                {item.cityState}
                 
               </div>
             );

@@ -8,21 +8,20 @@ import "react-datepicker/dist/react-datepicker.css";
 import HotelModal from "./HotelModal";
 import { Navigate, useNavigate } from "react-router-dom";
 import Search from "../otherUtilityComponents/Search";
-import CostumAdvertisement from "../otherUtilityComponents/CostumAdvertisement";
+
 import getHeaderWithProjectId from "../otherUtilityComponents/service";
+import BgSvg from "../otherUtilityComponents/BgSvg";
 
 function Hotels() {
   const [showGuestModal, setShowGuestModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [hotelsArray, setHotelsArray] = useState([]);
+  // const [hotelsArray, setHotelsArray] = useState([]);
   const [allLocations, setAllLocations] = useState([]);
 
-  // const [dateRange, setDateRange] = useState([null, null]);
-  // const [startDate, endDate] = dateRange;
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [noOfRooms, setNoOfRooms] = useState(0);
-  const [city, setCity] = useState(null);
+  const [city, setCity] = useState("");
   const [noOfGuests, setNoOfGuests] = useState({
     adults: 0,
     children: 0,
@@ -38,56 +37,43 @@ function Hotels() {
     }
   })
   const navigate = useNavigate();
-  async function getHotelDetails(location) {
+  async function getAllLocations() {
     setIsLoading(true);
     try {
       const config =getHeaderWithProjectId(); 
-      // {
-      //   headers: {
-      //     projectID: "wwu21mw2nfkr",
-      //   },
-      // };
       const response = await axios.get(
-        `https://academics.newtonschool.co/api/v1/bookingportals/hotel`,
+        `https://academics.newtonschool.co/api/v1/bookingportals/city`,
         config
         // ?search={"location":"${location}"}
       );
-      // setTotalData(response.data.data.hotels)
-      setHotelsArray(response.data.data.hotels);
+      // console.log("AllLocations",response.data.data.cities);
+      setAllLocations(response.data.data.cities);
+      console.log(response.data.data);
     } catch (err) {
       console.log("err", err);
     } finally {
       setIsLoading(false);
-      // console.log(response.data.data);
     }
   }
 
   useEffect(() => {
-    getHotelDetails("delhi");
+    getAllLocations();
+    // getHotelDetails(city);
   }, []);
 
   useEffect(() => {
     if(data.city!==null && data.city!==''){
       navigate("/hotels/results",{
         state:{
-          data:data,
-          hotels:hotelsArray,
-        },
-      });
+          city:data.city,
+          allLocations:allLocations,
+      }});
     }
+    // console.log(data);
   }, [data]);
-
-  useEffect(() => {
-    if (!isLoading) {
-      console.log(hotelsArray);
-      setAllLocations(hotelsArray.map((hotel) => hotel.location));
-      console.log(allLocations);
-    }
-  }, [isLoading]);
-
   
   const handleSearchBtnClick = () => {
-    console.log("hii from handle search");
+    // console.log("hii from handle search");
     setData((oldData)=>{
       return {
         ...oldData,
@@ -100,7 +86,7 @@ function Hotels() {
           children:noOfGuests.children,
         }
       }
-    })   
+    })
   };
 
   return !isLoading ? (
@@ -108,31 +94,11 @@ function Hotels() {
       {/* {hotelsArray.map((hotel)=>{
         return <div key={hotel._id}>{hotel.name}</div>
       })} */}
+      <BgSvg/>
 
-      <div className="hotel-page-title">Book Hotels & Homestays</div>
+      <h1 className="hotel-page-title">Book Hotels & Homestays</h1>
       <div className="hotels-form-container">
         <div className="hotel-location">
-          <div className="hotel-radio">
-            <div className="hotel-india">
-              <input
-                type="radio"
-                name="location"
-                id="india"
-                selected
-                value={"india"}
-              />
-              <label htmlFor="india">India</label>
-            </div>
-            <div className="hotel-international">
-              <input
-                type="radio"
-                name="location"
-                id="international"
-                value={"international"}
-              />
-              <label htmlFor="international">International</label>
-            </div>
-          </div>
           <div className="city">
             <div className="lable">Where</div>
             <div className="city-input">
@@ -141,7 +107,9 @@ function Hotels() {
                   setCity(value);
                 }}
                 searchFor={"City"}
-                array={hotelsArray}
+                // array={hotelsArray}
+                array={allLocations}
+                DefValue={data.city}
               />
             </div>
           </div>
@@ -194,7 +162,6 @@ function Hotels() {
               setRooms={(rooms) => setNoOfRooms(rooms)}
               />
               )}
-              {/* </div> */}
           </div>
           <div className="room-detail-parent" id="travel-pref">
             <div className="lable">Traveller Preference</div>
@@ -215,14 +182,14 @@ function Hotels() {
       <button className="hotel-search-btn" onClick={handleSearchBtnClick}>
         Search Hotels
       </button>
-      <div className="ads">
+      {/* <div className="ads">
         <CostumAdvertisement/>
         <CostumAdvertisement/>
         <CostumAdvertisement/>
         <CostumAdvertisement/>
         <CostumAdvertisement/>
         <CostumAdvertisement/>
-      </div>
+      </div> */}
     </div>
   ) : (
     <div className="loader">

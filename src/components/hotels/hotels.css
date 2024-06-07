@@ -132,7 +132,7 @@ input[type="radio"] {
 }
 .city-input input:focus{
     outline: none;
-    border-bottom: 3px solid #2274E0;
+    /* border-bottom: 3px solid #2274E0; */
 }
 .city-input{
     display: flex;
@@ -140,6 +140,22 @@ input[type="radio"] {
     align-items: center;
     flex-wrap: nowrap;
 }
+.hotel-search-city-input input{
+    border: none;
+    font-size: 18px;
+    color:rgb(255, 255, 255);
+    font-weight: 700;
+}
+/* .hotel-search-city-input input:focus{
+    outline: none;
+    border-bottom: 3px solid #2274E0;
+} */
+/* .hotel-search-city-input{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+} */
 #checkIn{
     border: none;
     font-size: 24px;
@@ -200,6 +216,7 @@ input[type="radio"] {
     margin: 1rem 0;
     font-size: 20px;
     font-weight: 600;
+    color: black;
 }
 .hotel-modal{
     /* width: 20rem; */
@@ -237,11 +254,29 @@ input[type="radio"] {
 }
 
 #hotel-search-result{
-    margin-top: 500px;
+    margin-top: 4rem;
 }
 @media screen and (max-width:650px){
     .room-details{
         grid-template-columns: repeat(1,1fr);
         grid-template-rows: repeat(4,1fr);
     }
+    .hotel-modal{
+        right: 0;
+        left: 0;
+    }
+}
+.hotel-result{
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    gap:.5rem;
+}
+.hotel-search-date{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: white;
+}
+.top-bar-label{
+    color:white;
 }

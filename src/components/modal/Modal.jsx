@@ -1,60 +1,64 @@
 import React, { useContext, useEffect, useRef } from "react";
 import "./modal.css";
 import { createPortal } from "react-dom";
-import Login from "../login/Login";
-import Signup from "../signup/Signup";
-import Logout from "../login/Logout";
-import { LoginContext } from "../Contexts/contexts";
-import { ModalContext } from "../Contexts/contexts";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { LoginContext ,useAuth,useModal} from "../Contexts/contexts";
+import SignIn from "../login/SignIn";
+import ProfileCard from "../login/Logout";
 // import SignInSide from "../login/LogIn2";
+import { Modal,Box, Typography} from "@mui/material";
+import { CloseRounded } from "@mui/icons-material";
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: "30rem",
+  bgcolor: 'background.paper',
+  border: "none",
+  borderRadius:"1rem",
+  boxShadow: 24,
+  p: 4,
+};
 
-const Modal = () => {
-  const {showModal,setShowModal}=useContext(ModalContext);
+const LoginModal = () => {
+  const { showModal,setShowModal } = useModal();
+  const { isLoggedIn,setIsLoggedIn } = useAuth();                 
 
   const ref = useRef();
   useEffect(() => {
+    // console.log("Modal Open");
     const checkIfClickedOutside = (e) => {
       // console.log("ref",ref.current);
       if (showModal && e.target.contains(ref.current)) {
         // console.log("setting showModal false");
         setShowModal(false);
       }
-    };
-    
+    };    
     document.addEventListener("click", checkIfClickedOutside);
     return () => {
       // console.log("modal close");
       document.removeEventListener("click", checkIfClickedOutside);
     };
   }, []);
-  useEffect(() => {
-    document.body.style.overflow = "hidden"
-    return () => {
-      document.body.style.overflow = "auto"
-    }
-  }, [])
 
-  const { isLoggedIn } = useContext(LoginContext);                 
-  // console.log("Modal Opened");
-
-  return createPortal(
-    <div className="modal" ref={ref}>
-      <div className="modal-content">
-        <FontAwesomeIcon onClick={()=>{
+  return (
+    <Modal 
+      open={showModal}
+      onClose={()=>setShowModal(false)}
+      ref={ref}>
+      {/* <Typography>Hello from Modal</Typography> */}
+      <Box sx={style}>
+        <CloseRounded onClick={()=>{
             // console.log("modal close");
             setShowModal(false);
-          }} className="xmark" icon={faXmark} />
-        {/* <div className="modal-banner">Banner</div> */}
-        <div className="modal-body">{isLoggedIn ? <Logout /> : <Login/>}
-        </div>
-        
-      </div>
-    </div>,
-    document.getElementById("modal-root")
+          }} className="xmark"/>
+        <Box >
+          {isLoggedIn ? <ProfileCard /> : <SignIn/>}
+        </Box>   
+      </Box>
+    </Modal>
   );
 };
 
 
-export default Modal;
+export default LoginModal;
