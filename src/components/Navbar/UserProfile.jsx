@@ -19,7 +19,7 @@ useEffect(()=>{
     const firstName=user.user.name.split(" ")[0];
     setUserName(firstName.charAt(0).toUpperCase()+firstName.substring(1).toLowerCase());
   }else{
-    console.log("some error occured");
+    console.log("User not found");
   }
   // setUserName("");
 },[isLoggedIn])

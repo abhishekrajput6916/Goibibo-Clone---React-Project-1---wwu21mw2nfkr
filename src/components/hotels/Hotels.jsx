@@ -1,23 +1,25 @@
 import axios from "axios";
 import "./hotels.css";
 import { FaSearch } from "react-icons/fa";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ThreeCircles } from "react-loader-spinner";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import HotelModal from "./HotelModal";
 import { Navigate, useNavigate } from "react-router-dom";
 import Search from "../otherUtilityComponents/Search";
-
+import Offers from "../Offers/Offers";
 import getHeaderWithProjectId from "../otherUtilityComponents/service";
 import BgSvg from "../otherUtilityComponents/BgSvg";
+import { Autocomplete, TextField } from "@mui/material";
 
 function Hotels() {
+  // const [hotelsArray, setHotelsArray] = useState([]);
+
+  const [error, setError] = useState("");
   const [showGuestModal, setShowGuestModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  // const [hotelsArray, setHotelsArray] = useState([]);
   const [allLocations, setAllLocations] = useState([]);
-
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [noOfRooms, setNoOfRooms] = useState(0);
@@ -26,21 +28,22 @@ function Hotels() {
     adults: 0,
     children: 0,
   });
-  const [data,setData]=useState({
-    city:'',
-    checkInDate:'',
-    checkOutDate:'',
-    guests:{
-      rooms:'',
-      adults:'',
-      children:'',
-    }
-  })
+  const cityRef = useRef();
+  // const [data,setData]=useState({
+  //   city:'',
+  //   checkInDate:'',
+  //   checkOutDate:'',
+  //   guests:{
+  //     rooms:'',
+  //     adults:'',
+  //     children:'',
+  //   }
+  // })
   const navigate = useNavigate();
   async function getAllLocations() {
     setIsLoading(true);
     try {
-      const config =getHeaderWithProjectId(); 
+      const config = getHeaderWithProjectId();
       const response = await axios.get(
         `https://academics.newtonschool.co/api/v1/bookingportals/city`,
         config
@@ -58,61 +61,117 @@ function Hotels() {
 
   useEffect(() => {
     getAllLocations();
+    console.log(allLocations);
     // getHotelDetails(city);
   }, []);
 
-  useEffect(() => {
-    if(data.city!==null && data.city!==''){
-      navigate("/hotels/results",{
-        state:{
-          city:data.city,
-          allLocations:allLocations,
-      }});
+  // useEffect(() => {
+  //   if(data.city!==null && data.city!==''){
+  //     navigate("/hotels/results",{
+  //       state:{
+  //         city:data.city,
+  //         allLocations:allLocations,
+  //     }});
+  //   }else{
+  //     setError('Enter City!');
+  //     console.log(cityRef.current);
+  //   }
+  // }, [data]);
+  const validateForm = () => {
+    if (city === null || city === "") {
+      setError("Enter City!");
+      console.log(cityRef.current);
+    } else {
+      return true;
     }
-    // console.log(data);
-  }, [data]);
-  
+
+    return false;
+  };
   const handleSearchBtnClick = () => {
     // console.log("hii from handle search");
-    setData((oldData)=>{
-      return {
-        ...oldData,
-        city:city,
-        checkInDate:startDate,
-        checkOutDate:endDate,
-        guests:{
-          rooms:noOfRooms,
-          adults:noOfGuests.adults,
-          children:noOfGuests.children,
+    // setData((oldData)=>{
+    //   return {
+    //     ...oldData,
+    //     city:city,
+    //     checkInDate:startDate,
+    //     checkOutDate:endDate,
+    //     guests:{
+    //       rooms:noOfRooms,
+    //       adults:noOfGuests.adults,
+    //       children:noOfGuests.children,
+    //     }
+    // }
+    // })
+
+    if (validateForm()) {
+      navigate(
+        `/hotels/${city}-${startDate}-${endDate}-${noOfGuests}-${noOfRooms}`,
+        {
+          state: {
+            city: city,
+            allLocations: allLocations,
+            startDate: startDate,
+            endDate: endDate,
+            noOfGuests: noOfGuests,
+            noOfRooms: noOfRooms,
+          },
         }
-      }
-    })
+      );
+    }
   };
 
   return !isLoading ? (
     <div className="hotels">
-      {/* {hotelsArray.map((hotel)=>{
-        return <div key={hotel._id}>{hotel.name}</div>
-      })} */}
-      <BgSvg/>
+      <BgSvg />
 
       <h1 className="hotel-page-title">Book Hotels & Homestays</h1>
       <div className="hotels-form-container">
         <div className="hotel-location">
-          <div className="city">
-            <div className="lable">Where</div>
-            <div className="city-input">
-              <Search
+          {/* <div className="city"> */}
+          {/* <div className="lable">Where</div> */}
+          {/* <div className="city-input"> */}
+          {/* <Search
+               ref={cityRef}
                 handleSearch={(value) => {
                   setCity(value);
                 }}
                 searchFor={"City"}
                 // array={hotelsArray}
                 array={allLocations}
-                DefValue={data.city}
+                DefValue={city}
+              /> */}
+          <Autocomplete
+            disablePortal
+            options={allLocations.map((ap) => {
+              return ap.cityState;
+            })}
+            value={city}
+            onChange={(e, val) => {
+              setCity(val);
+            }}
+            sx={{ minWidth: 300, }}
+            renderInput={(params) => (
+              <TextField
+                inputRef={cityRef}
+                className="city-input"
+                {...params}
+                placeholder="Enter City"
+                InputLabelProps={{
+                  shrink: true,
+                  sx: {
+                    color: "#696969",
+                    fontSize: "24px",
+                    marginBottom:'1rem',
+                    fontWeight: 500,
+                  },
+                }}
+                variant="standard"
+                label="Where"
               />
-            </div>
-          </div>
+            )}
+          />
+          {/* </div> */}
+          {/* </div> */}
         </div>
 
         <div className="room-details">
@@ -148,20 +207,20 @@ function Hotels() {
             {/* <div className="hotel-modal-container"> */}
 
             {showGuestModal && (
-              <HotelModal 
-              onClose={() => setShowGuestModal(false)}
-              setGuests={(adults, children) => {
-                setNoOfGuests((old) => {
-                  return {
-                    ...old,
-                    adults: adults,
-                    children: children,
-                  };
-                });
-              }}
-              setRooms={(rooms) => setNoOfRooms(rooms)}
+              <HotelModal
+                onClose={() => setShowGuestModal(false)}
+                setGuests={(adults, children) => {
+                  setNoOfGuests((old) => {
+                    return {
+                      ...old,
+                      adults: adults,
+                      children: children,
+                    };
+                  });
+                }}
+                setRooms={(rooms) => setNoOfRooms(rooms)}
               />
-              )}
+            )}
           </div>
           <div className="room-detail-parent" id="travel-pref">
             <div className="lable">Traveller Preference</div>
@@ -182,20 +241,14 @@ function Hotels() {
       <button className="hotel-search-btn" onClick={handleSearchBtnClick}>
         Search Hotels
       </button>
-      {/* <div className="ads">
-        <CostumAdvertisement/>
-        <CostumAdvertisement/>
-        <CostumAdvertisement/>
-        <CostumAdvertisement/>
-        <CostumAdvertisement/>
-        <CostumAdvertisement/>
-      </div> */}
+      {error && <p className="error">{error}</p>}
+      <Offers />
     </div>
   ) : (
-    <div className="loader">
+    <div className="loader hotels-loader">
       <ThreeCircles
-        height="100"
-        width="100"
+        height="50"
+        width="50"
         color="#F16825"
         wrapperStyle={{}}
         wrapperClass=""

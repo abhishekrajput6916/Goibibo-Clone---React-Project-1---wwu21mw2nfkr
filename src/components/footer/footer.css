@@ -9,10 +9,10 @@
 /* grid w-full grid-cols-2 gap-8 px-6 py-8 md:grid-cols-4 */
 .footer-section-1{
     display: grid;
-    width: 100%;
+    /* max-width: 100%; */
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap:8;
-    padding: 4rem 6rem;
+    /* padding: 4rem 6rem; */
     text-align: center;
 }
 .footer-section-2{
@@ -20,10 +20,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
-    padding: 2rem 4rem;
+    /* max-width: 100%; */
+    /* padding: 2rem 4rem; */
 }
-@media screen and (max-width:1200px) {
+@media screen and (width<=1200px) {
     .footer-section-1{   
         grid-template-columns: 1fr 1fr;
     }
@@ -32,7 +32,7 @@
     color: black;
 } */
 .footer-title{
-    margin: 1rem 0;
+    /* margin: 1rem 0; */
     font-size: 20px;
     font-weight: 600;
 }

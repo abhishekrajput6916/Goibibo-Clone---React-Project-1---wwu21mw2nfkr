@@ -162,8 +162,8 @@
     }   
     
 }
-.active{
-    background-color: #2274E0;
+.navbar .active{
+    background-color: rgb(34, 116, 224);
     color:aliceblue;
     transition: ease-in 0.3s;
     >.icon{

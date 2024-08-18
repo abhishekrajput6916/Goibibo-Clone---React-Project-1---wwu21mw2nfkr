@@ -5,6 +5,7 @@ import React from "react";
 import { useModal, useAuth } from "../Contexts/contexts";
 import { Box, Typography, Grid, Button } from "@mui/material";
 import { FacebookOutlined, LinkedIn, Twitter } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const ProfileCard = () => {
   const { setShowModal } = useModal();
@@ -19,6 +20,7 @@ const ProfileCard = () => {
       twitterId: "",
     },
   });
+  const navigate=useNavigate();
 
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem("user"));
@@ -44,6 +46,7 @@ const ProfileCard = () => {
     setIsLoggedIn(false);
     console.log("Log out", userDetails.name);
     setShowModal(false);
+    navigate('/')
   }
   return (
     <Box

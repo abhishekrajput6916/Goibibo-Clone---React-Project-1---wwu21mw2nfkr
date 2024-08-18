@@ -13,7 +13,7 @@ import {
   faBars,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import BrandLogo from "./BrandLogo";
 import UserProfile from "./UserProfile";
 import {useModal } from "../Contexts/contexts";
@@ -23,6 +23,7 @@ import { AppBar } from "@mui/material";
 import { Menu, MenuOpen } from "@mui/icons-material";
 
 export default function Navbar({currentUser,setCurrentUser}) {
+  const location=useLocation();
   const { showModal, setShowModal } = useModal(false);
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ export default function Navbar({currentUser,setCurrentUser}) {
         <BrandLogo />
         <ul className={hamburgerOpen ? "nav-links-mobile" : "nav-links"}>
           <li className="list-item">
-            <NavLink to="/flights" className="nav-link">
+            <NavLink to="/flights" className={`nav-link ${location.pathname==='/'?'active':''}`}>
               <FontAwesomeIcon className="icon" icon={faPlaneDeparture} />
               <div className="nav-labels">Flights</div>
             </NavLink>

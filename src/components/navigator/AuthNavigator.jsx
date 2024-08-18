@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import { useContext } from 'react';
-import { LoginContext, ModalContext } from '../Contexts/contexts';
+import { LoginContext, ModalContext, useAuth, useModal } from '../Contexts/contexts';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 function AuthNavigator({children}) {
-    const {isLoggedIn}=useContext(LoginContext);
-    const {setShowModal}=useContext(ModalContext);
+    const {isLoggedIn}=useAuth();
+    const {setShowModal}=useModal();
     const navigate=useNavigate();
     useEffect(()=>{
         if(!isLoggedIn){
@@ -13,6 +13,7 @@ function AuthNavigator({children}) {
         }else{
             console.log(children);
         }
+        return ()=>{navigate('/')}
     },[])
     return isLoggedIn && children;
 }

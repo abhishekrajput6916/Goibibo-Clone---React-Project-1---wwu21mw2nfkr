@@ -25,6 +25,7 @@
 
 @media only screen and (max-width:620px) {
     .modal{
+        margin: auto;
         width:90vw;
         padding: inherit 1.5rem;
     }

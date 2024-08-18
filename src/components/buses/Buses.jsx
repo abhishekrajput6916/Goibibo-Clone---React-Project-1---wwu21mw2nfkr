@@ -1,8 +1,12 @@
 import React from 'react'
+import BgSvg from '../otherUtilityComponents/BgSvg'
 
 function Buses() {
   return (
-    <div>Buses</div>
+    <div>
+      <BgSvg />
+      Buses
+    </div>
   )
 }
 
