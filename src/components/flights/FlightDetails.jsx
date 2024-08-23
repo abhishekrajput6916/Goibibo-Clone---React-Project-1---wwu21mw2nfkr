@@ -11,10 +11,11 @@ import {
 import "./flights.css";
 import { useEffect } from "react";
 import { LoginContext, useAuth, useModal } from "../Contexts/contexts";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 // import { ModalContext } from '../Contexts/contexts';
 
 const FlightDetails = (flight) => {
+  const {flightSource,flightDestination,flightDay,flightPassengers}=useParams();
   const { isLoggedIn } = useAuth();
   const { showModal, setShowModal } = useModal();
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ const FlightDetails = (flight) => {
     },
   ];
 
-  // useEffect(()=>{console.log(flight)},[])
+  useEffect(()=>{console.log(flight)},[])
   function handleFlightBookin() {
     if (isLoggedIn) {
       // navigate('./')
@@ -84,7 +85,7 @@ const FlightDetails = (flight) => {
             color="primary"
             style={{ marginRight: 8 }}
             onClick={() => {
-              navigate("/flight/checkout", { state: {
+              navigate(`/flight/${flightSource}/${flightDestination}/${flightDay}/${flightPassengers}/checkout`, { state: {
                 flightData:flight,
               } });
             }}

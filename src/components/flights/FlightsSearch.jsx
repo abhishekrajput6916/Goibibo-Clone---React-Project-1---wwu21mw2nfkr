@@ -28,17 +28,20 @@ import API from "../../axios";
 // import FlightsSorting from "./FlightsSorting";
 import FlightsSortBy from "./FlightsSorting";
 import { Datepicker } from "flowbite-react";
-import { useFlightData } from "../Contexts/contexts";
+import { useAuth, useFlightData, useFlightList } from "../Contexts/contexts";
 // import FlightCard from "./FlightCard";
 const FlightCard = lazy(() => import("./FlightCard"));
 
 function FlightsSearch() {
+  // const param();
+
   const sourceRef = useRef();
   const destinationRef = useRef();
   const [error, setError] = useState("");
   const matches = useMediaQuery("(min-width:880px)");
   const location = useLocation().state;
-  const [flights, setFlights] = useState([]);
+  // const [flights, setFlights] = useState([]);
+  const {flightList,setFlightList}=useAuth();
   const [airports, setAirports] = useState(location.airports);
   const [source, setSource] = useState(location.source);
   const [destination, setDestination] = useState(location.destination);
@@ -69,7 +72,18 @@ function FlightsSearch() {
       const response = await API.get(
         `flight?search={"source":"${src}","destination":"${dest}"}&day=${dy}`
       );
-      setFlights(response.data.data.flights)      
+      setFlightList(response.data.data.flights)
+      // setFlights(response.data.data.flights)  
+      setFlightContext(old=>{
+        // console.log("setting flightContext",source,destination)
+        return {
+          ...old,
+          source:source,
+          destination:destination,
+          departureDate:departureDate,
+          passengerDetails:passengerDetails,
+        }
+      })    
     } catch (err) {
       console.log("err", err);
     } finally {
@@ -81,11 +95,17 @@ function FlightsSearch() {
   useEffect(() => {
     // getFlightDetails(source, destination, day);
     handleFlightsUpdate();
-    console.log(flightContext)
   }, []);
+  
   useEffect(() => {
-    console.log(flights)
-  }, [flights])
+    setFlightContext({
+      ...flightContext,
+      source:source,
+      destination:destination,
+      departureDate:departureDate,
+      passengerDetails:{...passengerDetails},
+    })
+  }, [departureDate,source,destination,passengerDetails.adults,passengerDetails.children,passengerDetails.infant])
   
   function handleFlightsUpdate() {
     if (validateForm()) {
@@ -94,7 +114,6 @@ function FlightsSearch() {
       const dayNum = newdate.getDay();
       setDay(days[dayNum]);
       getFlightDetails(source, destination, day);
-      
     }
   }
   function validateForm() {
@@ -328,12 +347,12 @@ function FlightsSearch() {
             source={source}
             destination={destination}
             day={day}
-            totalFlights={flights.length}
+            totalFlights={flightList.length}
           />
           <Box className="flights-card-container">
             <Suspense   fallback={<div>LOADING...</div>}>
             {!isLoading ? (
-              flights.map((card) => {
+              flightList.map((card) => {
                 return (
                     <FlightCard key={card._id} card={card} />
                   );

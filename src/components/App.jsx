@@ -1,7 +1,7 @@
 import "../styles/App.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useParams } from "react-router-dom";
 import Navbar from "./Navbar/Navbar";
 import Flights from "./flights/Flights";
 import Hotels from "./hotels/Hotels";
@@ -17,6 +17,7 @@ import {
   useModal,
   useAuth,
   FlightBookingProvider,
+  FlightListProvider,
 } from "./Contexts/contexts";
 import ItemCard from "./otherUtilityComponents/resultPage/ItemCard";
 import MyFlights from "./flights/FlightsSearch";
@@ -43,53 +44,56 @@ function App() {
   useEffect(() => {
     if (user) {
       console.log("appjs rendered with username ", user.user.name);
+      // console.log(prams)
+
     }
   }, []);
   return (
     <ThemeProvider theme={defaultTheme}>
       <div className="App container">
         <ModalContextProvider>
+              <FlightBookingProvider>
           <AuthProvider>
             <Navbar currentUser={user} setCurrentUser={setUser} />
             <div className="main">
-              <Routes>
-                <Route path="*" element={<Page404 />} />
-                <Route path="/" element={<Flights />} />
-                <Route path="/flights" element={<Flights />} />
-                <Route
-                  path="/flights/:searchParam"
-                  element={
-                    <FlightBookingProvider>
-                      <FlightsSearch />
-                    </FlightBookingProvider>
-                  }
-                />
-                <Route path="/flights-search" element={<MyFlights />} />
+                <Routes>
+                  <Route path="*" element={<Page404 />} />
+                  <Route path="/" element={<Flights />} />
+                  <Route path="/flights" element={<Flights />} />
+                  <Route
+                    path="/flights/:flightSource/:flightDestination/:flightDay/:flightPassengers"
+                    element={
+                      
+                        <FlightsSearch />
+                    }
+                  />
+                  <Route
+                    path="/flight/:flightSource/:flightDestination/:flightDay/:flightPassengers/checkOut"
+                    element={
+                      <AuthNavigator>
+                        <FlightCheckOut />
+                      </AuthNavigator>
+                    }
+                  />
+                  <Route path="/flights-search" element={<MyFlights />} />
 
-                <Route path="/hotels" element={<Hotels />} />
-                <Route
-                  path="/hotels/:searchParams"
-                  element={<HotelSearchInterface />}
-                />
-                <Route path="/trains" element={<Trains />} />
-                <Route path="/bus" element={<Buses />} />
-                <Route path="/test" element={<ItemCard />} />
-                <Route
-                  path="/flight/checkOut"
-                  element={
-                    <AuthNavigator>
-                      <FlightCheckOut />
-                    </AuthNavigator>
-                  }
-                />
-                {/* <Route path="/cabs" element={<Cabs />} /> */}
-                {/* <Route path="/holidays" element={<Holidays />} /> */}
-                {/* <Route path="/forex" element={<Forex />} /> */}
-              </Routes>
+                  <Route path="/hotels" element={<Hotels />} />
+                  <Route
+                    path="/hotels/:searchParams"
+                    element={<HotelSearchInterface />}
+                  />
+                  <Route path="/trains" element={<Trains />} />
+                  <Route path="/bus" element={<Buses />} />
+                  <Route path="/test" element={<ItemCard />} />
+                  {/* <Route path="/cabs" element={<Cabs />} /> */}
+                  {/* <Route path="/holidays" element={<Holidays />} /> */}
+                  {/* <Route path="/forex" element={<Forex />} /> */}
+                </Routes>
             </div>
             <Divider />
             {/* <FooterComp/> */}
           </AuthProvider>
+              </FlightBookingProvider>
         </ModalContextProvider>
       </div>
     </ThemeProvider>

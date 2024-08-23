@@ -4,11 +4,14 @@ import React, { createContext, useContext, useState } from "react";
 export const LoginContext = createContext(false);
 export const ModalContext = createContext(false);
 export const FlightBookingContext = createContext(false);
+// export const FlightListContext = createContext([]);
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem("user"));
+  const [flightList, setFlightList] = useState([]);
+
   return (
-    <LoginContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+    <LoginContext.Provider value={{ isLoggedIn, setIsLoggedIn,flightList,setFlightList }}>
       {children}
     </LoginContext.Provider>
   );
@@ -25,8 +28,8 @@ export const ModalContextProvider = ({ children }) => {
 
 export const FlightBookingProvider = ({ children }) => {
   const [flightContext, setFlightContext] = useState({
-    source:'',
-    destination:'',
+    source: "",
+    destination: "",
   });
   return (
     <FlightBookingContext.Provider value={{ flightContext, setFlightContext }}>
@@ -34,6 +37,14 @@ export const FlightBookingProvider = ({ children }) => {
     </FlightBookingContext.Provider>
   );
 };
+
+// export const FlightListProvider = ({ children }) => {
+//   return (
+//     <FlightListContext.Provider value={{ flightList, setFlightList }}>
+//       {children}
+//     </FlightListContext.Provider>
+//   );
+// };
 
 export const useAuth = () => {
   return useContext(LoginContext);
@@ -44,3 +55,6 @@ export const useModal = () => {
 export const useFlightData = () => {
   return useContext(FlightBookingContext);
 };
+// export const useFlightList = () => {
+//   return useContext(FlightListContext);
+// };

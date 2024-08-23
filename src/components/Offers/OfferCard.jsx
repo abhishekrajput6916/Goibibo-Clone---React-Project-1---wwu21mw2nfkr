@@ -10,14 +10,17 @@ function OfferCard({item}) {
     // console.log(item);
   return (
     <div className='offer-card'>
-        <Card sx={{ maxWidth: 500 }}>
+        <Card sx={{ maxWidth: 500,height:'23rem',position:'relative' }}>
       <CardActionArea>
+        <div className='height-[12rem'>
         <CardMedia
           component="img"
-          height="140"
+          sx={{height:"12rem",
+            width:'100%'}}
           image={item.heroUrl}
           alt="green iguana"
         />
+        </div>
         <CardContent sx={{ width: 500 }}>
           <Typography gutterBottom variant="h6" component="div">
             {item.type}
@@ -31,7 +34,7 @@ function OfferCard({item}) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
+        <Button size="small" sx={{position:'absolute',bottom:15}} color="primary">
           {item.ctaText}
         </Button>
       </CardActions>

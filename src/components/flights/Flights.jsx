@@ -66,7 +66,7 @@ function Flights() {
     // console.log(source,destination)
     if(validateForm()){
       // console.log("form valid now :-> date is ",departureDate,day);
-    navigate(`/flights/${source}-${destination}-${day}--${passengerDetails.adults}-${passengerDetails.children}-${passengerDetails.infant}`,{state:{
+    navigate(`/flights/${source}/${destination}/${day}/${passengerDetails.adults}-${passengerDetails.children}-${passengerDetails.infant}`,{state:{
       source:source,
       destination:destination,
       departureDate:departureDate,
